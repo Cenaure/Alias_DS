@@ -7,8 +7,7 @@ def main_menu_kb() -> InlineKeyboardMarkup:
             InlineKeyboardButton(text='Список лобі', callback_data="list_lobby")
         ],
         [
-            InlineKeyboardButton(text='Налаштування', callback_data="settings"),
-            InlineKeyboardButton(text='Правила', callback_data="rules")
+            InlineKeyboardButton(text='Статистика', callback_data="leaderboard") #это я реализую годам к 25
         ]
     ])
     return keyboard

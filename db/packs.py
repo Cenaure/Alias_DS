@@ -1,7 +1,8 @@
-from db.connectMongo import get_Collection
+from db import get_Db
 
 async def addPack(packname: str):
-    col = await get_Collection()
+    db = get_Db()
+    col = db.get_collection('packs')
     add = await col.insert_one({
         "name": packname, 
         "words": ["hello", "world", "swaga", "набор", "слов", "в", "массиве"] #нахуячил заглушку, потом тут будет принимать соо от юзера
@@ -11,7 +12,8 @@ async def addPack(packname: str):
     
 async def getPackByName(packname: str):
     docName = None
-    col = await get_Collection()
+    db = get_Db()
+    col = db.get_collection('packs')
     document = await col.find_one({"name": packname})
     if document:
         docName = document.get("name")

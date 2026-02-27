@@ -1,13 +1,12 @@
 import os
 import asyncio
-from db.connectMongo import connect_Db
+from db import connect_Db
 from db.packs import addPack
 from bot.connectBot import connectTGBot
 
 
 async def main():
     await connect_Db()
-
     await connectTGBot()
     # await addPack(input("Тестовое имя записи: "))
     

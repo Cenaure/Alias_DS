@@ -69,6 +69,6 @@ def getLobbyIdList():
 async def joinLobbyDB(lobby_id: int, user_id: int):
     db = get_Db()
     col = db.get_collection('lobbys')
-    print("Got lobby_id,", lobby_id)
+    print("Got lobby_id,", type(lobby_id))
     col.find_one_and_update({"host": lobby_id}, {'$push': {"players": user_id}}) 
     print("Added ", user_id)

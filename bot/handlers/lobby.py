@@ -48,21 +48,12 @@ async def quitLobby(callback: types.CallbackQuery):
 async def joinLobby(callback: types.CallbackQuery):
     print("Joining lobby...")
     
-    #int()
     lobby_id = int(callback.data.split(":")[1])
-    #на таких костылях даже мой дед не ходил после перелома
-
-    #int()
     user_id = int(callback.from_user.id)
     print("Lobby_ID In joinLobby, ", lobby_id)
 
-
-    #изгой общества снизу 👇👇👇👇👇👇👇
-
     await joinLobbyDB(lobby_id , user_id)
-    
-    #изгой общества сверху 👆👆👆👆👆👆
-    #этот дурачoк думал что сможет типизировать в пайтон боже нищий
+
     
     await callback.message.edit_text(
         text="tipa connected",

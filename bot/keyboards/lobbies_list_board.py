@@ -1,11 +1,11 @@
 from aiogram.utils.keyboard import InlineKeyboardBuilder
-from db.lobbyHandle import getLobbyIdList
+import db.lobbyHandle as db
 from bot.callbacks.lobby import LobbyCallback
 
 async def lobbies_list_kb(lobbies_list: list):
     builder = InlineKeyboardBuilder()
     listsize = len(lobbies_list)
-    list_id = getLobbyIdList()
+    list_id = db.getLobbyIdList()
     for count in range (0, listsize):
         print("Lobbies list init")
         print("Button id ", list_id[count][0])

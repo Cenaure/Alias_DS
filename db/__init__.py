@@ -1,6 +1,4 @@
-import asyncio
 import os
-from dotenv import load_dotenv
 from motor.motor_asyncio import AsyncIOMotorClient
 
 _db = None
@@ -17,3 +15,4 @@ def get_Db():
         raise RuntimeError("Db not inited!")
     else:
         return _db
+

@@ -23,13 +23,26 @@ async def createLobbyDB(uid: int, name: str):
 async def deleteLobbyDB(uid: int, name: str):
     db = get_Db()
     col = db.get_collection('lobbys')
+
     rmdoc = await col.find_one_and_delete({"host": uid})
-    try:
-        lobbies_id_list.remove(uid)
-        lobbies_list.remove(name)
-    except ValueError:
-        pass
-    print("Removed ", rmdoc)
+    if rmdoc:
+        try:
+            lobbies_id_list.remove(uid)
+            lobbies_list.remove(name)
+        except ValueError:
+            pass
+        print("Removed ", rmdoc)
+    else:
+        print("No lobby deleted, removing user instead")
+        coll = db.get_collection('players')
+        player = await coll.find_one({"uid": uid})
+        if player is not None:
+            lobby_id = player.get("lobby_id")
+            await col.find_one_and_update({"host": lobby_id}, {"$pull": {"players": uid}})
+            print("Removed successfully ", uid)
+
+
+
 
 
 
@@ -59,8 +72,8 @@ async def fetchLobbiesList():
     print("IDs ", lobbies_id_list)
     return lobbies_list
 
-async def findHostLobby():
-    db = get_Db()
+#async def findHostLobby():
+    #db = get_Db()
     # col.find
 
 def getLobbyIdList():
@@ -74,3 +87,9 @@ async def joinLobbyDB(lobby_id: int, user_id: int, usname: str):
     col.find_one_and_update({"host": lobby_id}, {'$push': {"players": user_id}})
     await addPlayertoDB(user_id, usname, lobby_id, "player")
     print("Added ", user_id)
+
+async def flushDb():
+    db = get_Db()
+    col = db.get_collection('lobbys')
+    col.delete_many({})
+    print("Deleted All lobbies on start")

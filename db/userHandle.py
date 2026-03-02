@@ -18,3 +18,9 @@ async def removePlayerfromDB(uid: int):
     col = db.get_collection("players")
     await col.find_one_and_delete({"uid": uid})
     print("Player deleted", uid)
+
+async def flushPlayersDB():
+    db = get_Db()
+    col = db.get_collection("players")
+    await col.delete_many({})
+    print("Players flushed")

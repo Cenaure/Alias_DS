@@ -30,7 +30,8 @@ async def lobbiesList(callback: types.CallbackQuery):
 async def quitLobby(callback: types.CallbackQuery):
     uid = callback.from_user.id
     name = callback.from_user.full_name
-    await asyncio.gather(dbLobby.deleteLobbyDB(uid, name), removePlayerfromDB(uid) ,main_menu(None, callback))
+    await asyncio.gather(dbLobby.deleteLobbyDB(uid, name),main_menu(None, callback))
+    await removePlayerfromDB(uid)
 
 @router.callback_query(F.data.startswith("join_lobby:"))#LobbyCallback.filter(F.data == "join"))
 async def joinLobby(callback: types.CallbackQuery):

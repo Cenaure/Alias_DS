@@ -8,9 +8,11 @@ from aiogram import F
 from bot.handlers import register_routes
 
 dp = Dispatcher()
+
 async def connectTGBot():
     load_dotenv()
     bot = Bot(token=os.getenv('BOT'))
     register_routes(dp)
     print("Started bot")
     await dp.start_polling(bot)
+

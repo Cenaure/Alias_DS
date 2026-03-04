@@ -1,13 +1,16 @@
 from db import get_Db
 
+
 async def addPack(packname: str):
     db = get_Db()
     col = db.get_collection('packs')
     add = await col.insert_one({
         "name": packname, 
-        "words": ["hello", "world", "swaga", "набор", "слов", "в", "массиве"] #нахуячил заглушку, потом тут будет принимать соо от юзера
+        "words": []
     })
-    print("Записал на пейджер (БД) " + packname, add.inserted_id)
+    print("Создан пак " + packname, add.inserted_id)
+
+
 
     
 async def getPackByName(packname: str):

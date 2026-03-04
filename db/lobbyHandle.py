@@ -1,4 +1,5 @@
 import asyncio
+import random
 
 from db import get_Db
 from db.userHandle import addPlayertoDB
@@ -10,6 +11,7 @@ async def createLobbyDB(uid: int, name: str):
     await asyncio.gather(
         col.insert_one({
             "host": uid,
+            "code": random.randint(1000, 9999),
             "name": name,
             "status": "waiting",
             "players": [uid],
@@ -48,6 +50,7 @@ async def deleteLobbyDB(uid: int, name: str):
 
 lobbies_id_list = []
 lobbies_list = []
+#Убрать к чёрту, теперь вход по коду!!
 async def fetchLobbiesList():
     global lobbies_id_list
     global lobbies_list 
@@ -72,12 +75,24 @@ async def fetchLobbiesList():
     print("IDs ", lobbies_id_list)
     return lobbies_list
 
-#async def findHostLobby():
-    #db = get_Db()
-    # col.find
-
 def getLobbyIdList():
     return lobbies_id_list
+
+
+async def passLobby(lobby_code: int):
+    db = get_Db()
+    col = db.get_collection('lobbys')
+    lobby = await col.find_one({"code": lobby_code})
+    if lobby:
+        return lobby
+    else:
+        return None
+
+async def getLobbyCode(host_id: int):
+    db = get_Db()
+    col = db.get_collection('lobbys')
+    lobby = await col.find_one({"host": host_id})
+    return lobby['code']
 
 
 async def joinLobbyDB(lobby_id: int, user_id: int, usname: str):

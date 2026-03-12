@@ -38,6 +38,31 @@ async def deleteLobbyDB(uid: int):
             print("MONGO: Removed ", uid)
 
 
+async def joinLobbyDB(lobby_id: int, user_id: int, usname: str):
+    db = get_Db()
+    col = db.get_collection('lobbys')
+    print("Got lobby_id,", type(lobby_id))
+    col.find_one_and_update({"host": lobby_id}, {'$push': {"players": user_id}})
+    await addPlayertoDB(user_id, usname, lobby_id, "player")
+    print("Added ", user_id)
+
+# -------------------------
+
+async def flushDb():
+    db = get_Db()
+    col = db.get_collection('lobbys')
+    col.delete_many({})
+    print("MONGO: Deleted All lobbies on start")
+
+async def generateLobbyCode():
+    db = get_Db()
+    col = db.get_collection('lobbys')
+    while True:
+        code = random.randint(1000, 9999)
+        exist = await col.find_one({"code": code})
+        if not exist:
+            return code
+
 async def findLobbyByCode(lobby_code: int):
     db = get_Db()
     col = db.get_collection('lobbys')
@@ -52,29 +77,3 @@ async def getLobbyCode(host_id: int):
     col = db.get_collection('lobbys')
     lobby = await col.find_one({"host": host_id})
     return lobby['code']
-
-
-async def joinLobbyDB(lobby_id: int, user_id: int, usname: str):
-    db = get_Db()
-    col = db.get_collection('lobbys')
-    print("Got lobby_id,", type(lobby_id))
-    col.find_one_and_update({"host": lobby_id}, {'$push': {"players": user_id}})
-    await addPlayertoDB(user_id, usname, lobby_id, "player")
-    print("Added ", user_id)
-
-async def flushDb():
-    db = get_Db()
-    col = db.get_collection('lobbys')
-    col.delete_many({})
-    print("MONGO: Deleted All lobbies on start")
-
-
-# -------------------------
-async def generateLobbyCode():
-    db = get_Db()
-    col = db.get_collection('lobbys')
-    while True:
-        code = random.randint(1000, 9999)
-        exist = await col.find_one({"code": code})
-        if not exist:
-            return code

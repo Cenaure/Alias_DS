@@ -12,7 +12,10 @@ async def start_bot():
     async def on_ready():
         print(f"Bot online {bot.user}")
 
+    #Реєстрація івентів, команд та іншого.. не загубитись пж(
     bot.load_extension('bot.cogs.main_menu_cog')
+    bot.load_extension('bot.cogs.create_packs_cog')
+
     await bot.start(os.getenv("BOT"))
 
 def get_bot() -> discord.Bot:

@@ -1,19 +1,20 @@
 from db import get_Db
 
 
-async def addPack(packname: str):
+async def addPack(packname: str, words: list, uid: int):
     db = get_Db()
     col = db.get_collection('packs')
     add = await col.insert_one({
-        "name": packname, 
-        "words": []
+        "uid": uid,
+        "name": packname,
+        "words": words,
     })
-    print("Создан пак " + packname, add.inserted_id)
+    print("PACKS: Створений набір слів ", packname)
 
 
 
     
-async def getPackByName(packname: str):
+async def getPackById(packname: str):
     docName = None
     db = get_Db()
     col = db.get_collection('packs')

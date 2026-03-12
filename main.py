@@ -11,6 +11,7 @@ async def main():
         flushDb(),
         flushPlayersDB(),
         connectBot.start_bot())
+
     
 if __name__ == "__main__":
     try:

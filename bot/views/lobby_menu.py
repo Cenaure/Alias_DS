@@ -9,12 +9,12 @@ from db.userHandle import removePlayerfromDB
 
 
 class LobbyMenuView(BaseView):
-    def __init__(self, uname: str, code: int, player_count: int, players: list):
+    def __init__(self, uname: str, code: int, player_count: int, players: list, interaction: discord.Interaction):
         self.uname = uname
         self.code = code
         self.player_count = player_count
         self.players = players
-        self.message: discord.Message = None
+        self.interaction = interaction
         self.menu_text = self._build_text()
         super().__init__(back_view=None)
 
@@ -28,12 +28,12 @@ class LobbyMenuView(BaseView):
         )
 
 
-    async def refreshLobby(self, player_count: int):
+    async def refreshLobby(self, player_count: int): #не забути про те, що тут метод повинен оновлювати ще список гравців
+        #ще можна копіпаст цього методу для інших менюшок де це реально буде необхідно в реалтаймі
         self.player_count = player_count
         self.menu_text = self._build_text()
         if self.message:
-            await self.message.edit(content=self.menu_text, view=self)
-        # discord.errors.NotFound: 404 Not Found (error code: 10008): Unknown Message ТВАРИ
+            await self.interaction.edit_original_response(content=self.menu_text, view=self)
 
 
     @discord.ui.button(label="Почати Гру", style=discord.ButtonStyle.primary, row=0)

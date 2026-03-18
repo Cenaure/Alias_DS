@@ -4,7 +4,6 @@ import discord
 from bot.views.base import BaseView
 
 
-
 class PacksListView(BaseView):
     def __init__(self, packs: list[dict]):
         from bot.views.packs_menu import PacksMenuView
@@ -28,11 +27,13 @@ class PackButton(discord.ui.Button):
     async def callback(self, interaction: discord.Interaction):
         words = self.pack['words']
         words_str = "\n".join(f" {w}" for w in words)
-        await interaction.response.edit_message( #FIX AttributeError 'BackButton' object has no attribute 'to_components'. Did you mean: 'from_component'? PLS
+        from bot.states.pack_view_state import get_pack_view
+        view = get_pack_view(interaction.user.id)
+        await interaction.response.edit_message(
             content=f"Набір {self.pack['name']}\n"
                     f"Слів: {len(self.pack['words'])}\n"
                     f"{words_str}",
-            view = BackButton(row=4, view=None)
+            view = view
             )
 
 
@@ -48,10 +49,11 @@ class BackButton(discord.ui.Button):
 
 
     async def callback(self, interaction: discord.Interaction):
-        from bot.states.pack_view_state import get_pack_view
-        if not self._view:
-            self._view = get_pack_view(interaction.user.id)
+        from bot.states.pack_view_state import unregister_pack_view
+        from bot.views.packs_menu import PacksMenuView
+        unregister_pack_view(interaction.user.id)
+        view = PacksMenuView()
         await interaction.response.edit_message(
-            content=self._view.menu_text,
-            view=self._view
+            content=view.menu_text,
+            view=view
         )

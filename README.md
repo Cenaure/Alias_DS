@@ -4,8 +4,8 @@ Currently i'm planning only a few features, but maybe in future i will add more 
 ### Planned features (for now)
 | Feature | Is is done? |
 |---|---|
-| Lobby System | Working on.. |
-| Packs System | Working on.. |
+| Lobby System (may contain bugs) | Join ✅ / Leave ✅ / Create ✅ / Remove ✅ |
+| Packs System | Create ✅ / Remove not yet |
 | Game Rounds | Not yet |
 | Leaderboard | Not yet |
 | Admin settings | Not yet |

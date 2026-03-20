@@ -11,7 +11,7 @@ from db.userHandle import removePlayerfromDB
 
 
 class LobbyMenuView(BaseView):
-    def __init__(self, uname: str, code: int, player_count: int, players: list, interaction: discord.Interaction, pack: str = "Не обрано"):
+    def __init__(self, uname: str, code: int, player_count: int, players: list, interaction: discord.Interaction, pack: str):
         self.uname = uname
         self.code = code
         self.player_count = player_count
@@ -32,11 +32,14 @@ class LobbyMenuView(BaseView):
         )
 
 
-    async def refreshLobby(self, player_count: int = 1, players: list = [], pack_name: str = "Не обрано"): #не забути про те, що тут метод повинен оновлювати ще список гравців
+    async def refreshLobby(self, player_count: int = 1, players: list = [], pack_name: str = ""): #не забути про те, що тут метод повинен оновлювати ще список гравців
         #ще можна копіпаст цього методу для інших менюшок де це реально буде необхідно в реалтаймі
-        self.player_count = player_count
-        self.players = players
-        self.pack = pack_name
+        if self.player_count == 0 and player_count is not None:
+            self.player_count = player_count
+        if self.players is None and players is not []:
+            self.players = players
+        if pack_name is not "":
+            self.pack = pack_name
         self.menu_text = self._build_text()
         if self.message:
             await self.interaction.edit_original_response(content=self.menu_text, view=self)

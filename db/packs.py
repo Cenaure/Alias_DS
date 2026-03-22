@@ -21,14 +21,11 @@ async def removePack(packname: str, uid: int):
         return
 
 
-async def getPackById(packname: str):
-    docName = None
+async def getPackByName(packname: str):
     db = get_Db()
     col = db.get_collection('packs')
     document = await col.find_one({"name": packname})
-    if document:
-        docName = document.get("name")
-    return docName
+    return document
 
 async def fetchOwnPacks(uid: int):
     db = get_Db()

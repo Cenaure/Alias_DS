@@ -4,10 +4,14 @@ import discord
 
 from bot.states.states import get_state, States
 from bot.views.base import BaseView
+from bot.views.game.round_menu import RoundView
 from bot.views.packs.pack_select_lobby import PacksSelectLobbyView
-from db.lobbyHandle import deleteLobbyDB
-from db.packs import fetchAllPacks
+from db.lobbyHandle import deleteLobbyDB, findLobbyByCode
+from db.packs import fetchAllPacks, getPackByName
 from db.userHandle import removePlayerfromDB
+from game.game_session import GameSession
+from game.game_states import register_active_session
+
 
 class LobbyMenuView(BaseView):
     def __init__(self, uname: str, code: int, player_count: int, players: list, interaction: discord.Interaction, pack: str):
@@ -46,7 +50,13 @@ class LobbyMenuView(BaseView):
 
     @discord.ui.button(label="Почати Гру", style=discord.ButtonStyle.primary, row=0)
     async def start_game(self, button: discord.ui.Button, interaction: discord.Interaction):
-        pass
+        lobby = await findLobbyByCode(self.code)
+        pack = await getPackByName(lobby['pack'])
+        session = GameSession(words=pack['words'], players=lobby['players'])
+        register_active_session(interaction.user.id, session)
+        view = RoundView(interaction.user.id)
+        view.wha()
+        await self.goto(interaction, view)
 
     @discord.ui.button(label="Обрати набір", style=discord.ButtonStyle.primary, row=0)
     async def select_pack(self, button: discord.ui.Button, interaction: discord.Interaction):

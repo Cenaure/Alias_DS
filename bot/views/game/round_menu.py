@@ -12,4 +12,5 @@ class RoundView(BaseView):
         print("Inside round menu game data: ", self.words, self.players)
     @discord.ui.button(label="нэ", style=discord.ButtonStyle.primary, row=0)
     async def test_func(self, button: discord.ui.Button, interaction: discord.Interaction):
-        pass   #заглушка
+        self.session.get_random_word()
+        #заглушка

@@ -52,7 +52,7 @@ class LobbyMenuView(BaseView):
     async def start_game(self, button: discord.ui.Button, interaction: discord.Interaction):
         lobby = await findLobbyByCode(self.code)
         pack = await getPackByName(lobby['pack'])
-        session = GameSession(words=pack['words'], players=lobby['players'])
+        session = GameSession(words=pack['words'], players=lobby['players'], player_scores={})
         register_active_session(interaction.user.id, session)
         view = RoundView(interaction.user.id)
         view.wha()

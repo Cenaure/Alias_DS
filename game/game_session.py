@@ -1,6 +1,5 @@
 from random import randint
 
-
 class GameSession:
     def __init__(self, words: list, players, player_scores: dict):
         self.words = words
@@ -13,6 +12,14 @@ class GameSession:
     def start_round(self):
         pass
     #def update_game_data
+
+    def update_player_scores(self, uid: int, status: bool):
+        if self.player_scores[uid] == 0:
+            return
+        if status:
+            self.player_scores[uid] += 1
+        else:
+            self.player_scores[uid] -= 1
 
     def get_random_word(self, word):
         rand_index = randint(0, len(self.words) - 1)

@@ -10,17 +10,18 @@ class RoundView(BaseView):
         self.interaction = interaction
         super().__init__(back_view=None)
 
-    def _build_text(self, words):
+    @staticmethod
+    def _build_text(words):
         words_str = "\n".join(f"{w}" for w in words)
-        return f"{words_str}"
+        return f"{words_str} <-"
 
-    async def update_text(self, text):
-        await self.interaction.edit_original_response(content=text, view=self)
-
-    @discord.ui.button(label="нэ", style=discord.ButtonStyle.primary, row=0)
-    async def test_func(self, button: discord.ui.Button, interaction: discord.Interaction):
+    async def update_text(self):
         word = self.session.get_random_word(self.current_word)
         self.words.append(word)
         text = self._build_text(words=self.words)
-        await self.update_text(text)
-        return
+        await self.interaction.edit_original_response(content=text, view=self)
+
+    @discord.ui.button(label="Update", style=discord.ButtonStyle.primary, row=0)
+    async def like_button(self, button: discord.ui.Button, interaction: discord.Interaction):
+
+        await self.update_text()

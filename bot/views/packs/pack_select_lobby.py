@@ -36,7 +36,7 @@ class PackButton(discord.ui.Button):
         from bot.states.lobby_state import get_views
         view = get_views(interaction.user.id)
         clear_state(interaction.user.id)
-        await view.refreshLobby(pack_name=self.pack['name'])
+        await view.refresh_lobby(pack_name=self.pack['name'])
         await interaction.response.edit_message(
             content=view.menu_text,
             view=view

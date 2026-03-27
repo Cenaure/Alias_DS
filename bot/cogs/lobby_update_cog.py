@@ -20,7 +20,7 @@ class LobbyUpdateCog(commands.Cog):
         playerCount = len(lobby['players'])
         players = lobby['player_names']
         print("LOBBY_UPDATE: Triggered custom event!!")
-        await lobby_view.refreshLobby(playerCount, players)
+        await lobby_view.refresh_lobby(playerCount, players)
 
     @commands.Cog.listener()
     async def on_destroy_lobby(self, code):

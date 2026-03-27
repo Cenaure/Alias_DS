@@ -10,7 +10,7 @@ def register_team(lobby_id: int, team_name: str, players: list[int]):
         registered_teams[lobby_id] = {
             team_name: players
         }
-    print(f"Registered team {registered_teams}.")
+        print(f"Registered team {registered_teams}.")
     return
 
 def join_team(lobby_id: int, team_name: str, player_id: int):
@@ -24,4 +24,4 @@ def get_lobby_teams(lobby_id: int):
     if lobby_id in registered_teams:
         return registered_teams[lobby_id]
     else:
-        return None
+        return {}

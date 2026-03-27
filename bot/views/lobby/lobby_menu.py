@@ -39,14 +39,14 @@ class LobbyMenuView(BaseView):
         )
 
 
-    async def refreshLobby(self, player_count: int = None, players: list = None, pack_name: str = None, team_name: str = None):
+    async def refresh_lobby(self, player_count: int = None, players: list = None, pack_name: str = None, team_name: str = None):
         if player_count is not None:
             self.player_count = player_count
         if players is not None:
             self.players = players
         if pack_name is not None:
             self.pack = pack_name
-        if pack_name is not None:
+        if team_name is not None:
             self.selected_team = team_name
         self.menu_text = self._build_text()
         if get_state(self.host_id) != States.SELECTING_PACK:

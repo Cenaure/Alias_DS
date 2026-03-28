@@ -1,8 +1,8 @@
 import asyncio
 
-from bot.views.base import BaseView
 import discord
 
+from bot.views.base import BaseView
 from bot.views.teams.teams_list_menu import TeamsListView
 from db.lobbyHandle import leaveLobbyDB, findLobbyByCode
 from db.userHandle import removePlayerfromDB

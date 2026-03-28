@@ -1,7 +1,7 @@
-from bot.states.pack_view_state import get_pack_view
-from bot.views.base import BaseView
 import discord
 
+from bot.states.pack_view_state import get_pack_view
+from bot.views.base import BaseView
 from db.packs import removePack
 
 

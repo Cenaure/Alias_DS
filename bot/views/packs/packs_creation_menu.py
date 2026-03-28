@@ -1,6 +1,6 @@
 import discord
-from bot.views.base import BaseView
 
+from bot.views.base import BaseView
 from db.packs import addPack
 
 

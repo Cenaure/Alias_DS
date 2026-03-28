@@ -1,7 +1,6 @@
 
 import discord
 
-
 from bot.views.base import BaseView
 
 

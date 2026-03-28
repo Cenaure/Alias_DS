@@ -1,6 +1,5 @@
 import discord
 
-
 from bot.states.states import set_state, States
 from bot.views.base import BaseView
 from bot.views.packs.packs_creation_menu import CreatePackMenu

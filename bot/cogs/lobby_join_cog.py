@@ -28,7 +28,6 @@ class LobbyJoinCog(commands.Cog):
             from bot.connectBot import get_bot
             bot = get_bot()
             bot.dispatch("update_lobby", lobby)
-
             #Оновлення менюшки для гравця який приєднується
             from bot.states.join_state import get_join_view
             view = get_join_view(message.author.id)

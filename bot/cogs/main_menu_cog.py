@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 from bot.views.main_menu import MainMenuView
 
+
 class MenuCog(commands.Cog):
     def __init__(self, bot):
         self.bot = bot

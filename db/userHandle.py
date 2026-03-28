@@ -1,8 +1,7 @@
 import asyncio
 
-from aiogram.types import CallbackQuery
-
 from db import get_Db
+
 
 async def addPlayertoDB(uid: int, usname: str, lobby_id: int, role: str):
     db = get_Db()

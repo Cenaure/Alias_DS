@@ -1,5 +1,3 @@
-from bot.views.base import BaseView
-
 _states: dict[int, dict] = {}
 
 def set_state(user_id: int, state: str, **data):

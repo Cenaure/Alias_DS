@@ -1,6 +1,7 @@
 import asyncio
-import db
+
 import bot.connectBot as connectBot
+import db
 from db.lobbyHandle import flushDb
 from db.userHandle import flushPlayersDB
 

@@ -1,11 +1,6 @@
-
-from bot.views.base import BaseView
 import discord
-
+from bot.views.base import BaseView
 from bot.views.lobby.lobby_player_menu import LobbyClientView
-from bot.views.teams.teams_list_menu import TeamsListView
-from db.lobbyHandle import findLobbyByCode
-
 
 class JoinMenuView(BaseView):
 

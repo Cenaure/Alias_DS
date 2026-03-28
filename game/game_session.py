@@ -1,9 +1,10 @@
 from random import randint
 
 class GameSession:
-    def __init__(self, words: list, players, player_scores: dict):
+    def __init__(self, words: list, players, player_scores: dict, teams: dict):
         self.words = words
         self.players = players
+        self.teams = teams
         self.player_scores = player_scores
         self.current_word = self.get_random_word("")
     def get_game_data(self):
@@ -11,7 +12,6 @@ class GameSession:
 
     def start_round(self):
         pass
-    #def update_game_data
 
     def update_player_scores(self, uid: int, status: bool):
         if self.player_scores[uid] == 0:

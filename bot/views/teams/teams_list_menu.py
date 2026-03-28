@@ -6,27 +6,23 @@ from game.game_teams import register_team, get_lobby_teams, join_team
 
 
 class TeamsListView(BaseView):
-    def __init__(self, interaction: discord.Interaction, host_id: int) -> None:
+    def __init__(self, interaction: discord.Interaction, host_id: int, back_view):
         self.host_id = host_id
+        self.back_view = back_view
         self.menu_text = "Оберіть команду, або створіть нову"
         self.interaction = interaction
         self.teams = get_lobby_teams(self.host_id)
         super().__init__(back_view=None)
         for team in self.teams:
             print("DEBUG: teams:", team)
-            self.add_item(TeamButton(team=team, row=len(self.teams) // 3, lobby_id=self.host_id))
+            self.add_item(TeamButton(team=team, row=len(self.teams) // 3, lobby_id=self.host_id, teamListView=self))
         self.add_item(CreateTeam(row=4, uid=self.host_id, teamlistview=self))
+        self.add_item(BackButton(teamlistview=self))
 
-    # async def update_teams(self):
-    #     self.teams = get_lobby_teams(self.host_id)
-    #     print("SELF TEAMS: ", self.teams)
-    #     for team in self.teams:
-    #         print("DEBUG: teams:", team)
-    #         self.add_item(TeamButton(team=team, row=len(self.teams) // 3, lobby_id=self.host_id))
-    #     await self.interaction.edit_original_response(content=self.menu_text, view=self)
 class TeamButton(discord.ui.Button):
-    def __init__(self, team, row: int, lobby_id: int):
+    def __init__(self, team, row: int, lobby_id: int, teamListView: TeamsListView):
         self.team = team
+        self.teamListView = teamListView
         self.lobby_id = lobby_id
         super().__init__(
             label=f"Команда '{team}'",
@@ -37,7 +33,10 @@ class TeamButton(discord.ui.Button):
 
     async def callback(self, interaction: discord.Interaction):
         if interaction.user.name != self.team:
-            join_team(lobby_id=self.lobby_id, player_id=interaction.user.id, team_name=self.team['name'])
+            join_team(lobby_id=self.lobby_id, player_id=interaction.user.id, team_name=self.team)
+            print(f"{interaction.user.id} JOINED TEAM {self.team}")
+            view = self.teamListView.back_view
+            await interaction.response.edit_message(content=view.menu_text, view=view)
         else:
             print(f"TEAMS: Exception! Cannot join player {interaction.user.name} to self team")
 
@@ -53,12 +52,25 @@ class CreateTeam(discord.ui.Button):
             row=row,
             )
     async def callback(self, interaction: discord.Interaction):
-        from bot.states.lobby_state import get_views
         register_team(self.uid, interaction.user.name,[interaction.user.id])
-        view = get_views(self.uid)
-        await view.refresh_lobby(team_name=interaction.user.name)
-        #await self.teamlistview.update_teams()
+        back_view = self.teamlistview.back_view
+        await back_view.refresh_lobby(interaction.user.name)
         await interaction.response.edit_message(
-            content=view.menu_text,
-            view=view
+            content=back_view.menu_text,
+            view=back_view
+        )
+
+class BackButton(discord.ui.Button):
+    def __init__(self, teamlistview: TeamsListView):
+        self.teamlistview = teamlistview
+        super().__init__(
+            label="Назад",
+            style=discord.ButtonStyle.secondary,
+            row=4,
+            )
+    async def callback(self, interaction: discord.Interaction):
+        back_view = self.teamlistview.back_view
+        await interaction.response.edit_message(
+            content=back_view.menu_text,
+            view=back_view
         )

@@ -57,14 +57,14 @@ class LobbyMenuView(BaseView):
     async def start_game(self, button: discord.ui.Button, interaction: discord.Interaction):
         lobby = await findLobbyByCode(self.code)
         pack = await getPackByName(lobby['pack'])
-        session = GameSession(words=pack['words'], players=lobby['players'], player_scores={})
+        session = GameSession(words=pack['words'], players=lobby['players'], player_scores={}, teams={})
         register_active_session(interaction.user.id, session)
         view = RoundView(interaction.user.id, interaction)
         await self.goto(interaction, view)
 
-    @discord.ui.button(label="Обрати команду", style=discord.ButtonStyle.blurple, row=0)
+    @discord.ui.button(label="Обрати команду", style=discord.ButtonStyle.primary, row=0)
     async def select_team(self, button: discord.ui.Button, interaction: discord.Interaction):
-        view = TeamsListView(interaction, self.host_id)
+        view = TeamsListView(interaction, self.host_id, self)
         await self.goto(interaction, view)
 
     @discord.ui.button(label="Обрати набір", style=discord.ButtonStyle.primary, row=0)

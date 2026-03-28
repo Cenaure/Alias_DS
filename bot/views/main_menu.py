@@ -3,7 +3,7 @@ import discord
 import bot.states.lobby_state as lobby_state
 from bot.states.join_state import register_join_view
 from bot.views.base import BaseView
-from db.lobbyHandle import createLobbyDB, getLobbyCode
+from db.lobbyHandle import createLobbyDB
 from bot.states.states import set_state, States
 
 class MainMenuView(BaseView):

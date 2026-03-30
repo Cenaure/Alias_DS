@@ -5,6 +5,7 @@ import discord
 from bot.states.states import get_state, States
 from bot.views.base import BaseView
 from bot.views.game.round_menu import RoundView
+from bot.views.game.round_register import register_round_view
 from bot.views.packs.pack_select_lobby import PacksSelectLobbyView
 from bot.views.teams.teams_list_menu import TeamsListView
 from db.lobbyHandle import deleteLobbyDB, findLobbyByCode
@@ -60,6 +61,10 @@ class LobbyMenuView(BaseView):
         session = GameSession(words=pack['words'], players=lobby['players'], player_scores={}, teams={})
         register_active_session(interaction.user.id, session)
         view = RoundView(interaction.user.id, interaction)
+        register_round_view(interaction.user.id, view)
+        from bot.connectBot import get_bot
+        bot = get_bot()
+        bot.dispatch("start_game_global", lobby)
         await self.goto(interaction, view)
 
     @discord.ui.button(label="Обрати команду", style=discord.ButtonStyle.primary, row=0)

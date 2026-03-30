@@ -14,7 +14,7 @@ class RoundView(BaseView):
 
     @staticmethod
     def _build_text(words):
-        words_str = "\n".join(f"{w}" for w in words)
+        words_str = "\n".join(f"{w}" for w in words[:-1])
         return f"{words_str} <-"
 
     async def update_text(self):
@@ -23,7 +23,12 @@ class RoundView(BaseView):
         text = self._build_text(words=self.words)
         await self.interaction.edit_original_response(content=text, view=self)
 
-    @discord.ui.button(label="Update", style=discord.ButtonStyle.primary, row=0)
+    @discord.ui.button(label="✅ Вгадав", style=discord.ButtonStyle.success, row=0)
     async def like_button(self, button: discord.ui.Button, interaction: discord.Interaction):
+
+        await self.update_text()
+
+    @discord.ui.button(label="❎ Не вгадав", style=discord.ButtonStyle.danger, row=0)
+    async def dislike_button(self, button: discord.ui.Button, interaction: discord.Interaction):
 
         await self.update_text()

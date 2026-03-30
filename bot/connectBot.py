@@ -1,5 +1,4 @@
 import os
-
 import discord
 from dotenv import load_dotenv
 
@@ -19,6 +18,7 @@ async def start_bot():
     bot.load_extension('bot.cogs.create_packs_cog')
     bot.load_extension('bot.cogs.lobby_update_cog')
     bot.load_extension('bot.cogs.lobby_join_cog')
+    bot.load_extension('bot.cogs.game_update_cog')
     await bot.start(os.getenv("BOT"))
 
 def get_bot() -> discord.Bot:

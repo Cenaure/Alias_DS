@@ -31,7 +31,7 @@ class LobbyJoinCog(commands.Cog):
             #Оновлення менюшки для гравця який приєднується
             from bot.states.join_state import get_join_view
             view = get_join_view(message.author.id)
-            await view.joinLobbySetView(lobby_name=lobby['name'], player_count=len(lobby['players']), players=lobby['player_names'], code=code)
+            await view.joinLobbySetView(lobby_name=lobby['name'], player_count=len(lobby['players']), players=lobby['player_names'], code=code, host_id=lobby['host'])
 
             print("JOINED LOBBY, player ", message.author.name)
 

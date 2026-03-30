@@ -1,15 +1,15 @@
 import asyncio
-
 import discord
-
 from bot.views.base import BaseView
+from bot.views.game.round_menu import RoundView
+from bot.views.game.round_register import register_round_view
 from bot.views.teams.teams_list_menu import TeamsListView
 from db.lobbyHandle import leaveLobbyDB, findLobbyByCode
 from db.userHandle import removePlayerfromDB
 
-
 class LobbyClientView(BaseView):
-    def __init__(self, lobby_name, player_count: int, players: list, code: int, interaction: discord.Interaction):
+    def __init__(self, lobby_name, player_count: int, players: list, code: int, interaction: discord.Interaction, host_id: int):
+        self.host_id = host_id
         self.lobby_name = lobby_name
         self.player_count = player_count
         self.team_name = "Не обрано"
@@ -29,14 +29,18 @@ class LobbyClientView(BaseView):
             f"Очікуйте початку гри..."
         )
     async def refresh_lobby(self, team_name: str):
+
         self.team_name = team_name
         self.menu_text = self._build_text()
 
+    async def global_start_game(self, role: str):
+        view = RoundView(self.interaction.user.id, self.interaction)
+        register_round_view(self.host_id, view)
+        await self.goto(self.interaction, view)
+
     @discord.ui.button(label="Обрати команду", style=discord.ButtonStyle.primary, row=4)
     async def select_team(self, button: discord.ui.Button, interaction: discord.Interaction):
-        lobby = await findLobbyByCode(self.code)
-        print(lobby['host'])
-        view = TeamsListView(interaction, lobby['host'], self)
+        view = TeamsListView(interaction, self.host_id, self)
         await self.goto(interaction, view=view)
 
     @discord.ui.button(label="Вийти", style=discord.ButtonStyle.secondary, row=1)

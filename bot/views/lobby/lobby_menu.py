@@ -13,6 +13,7 @@ from db.packs import fetchAllPacks, getPackByName
 from db.userHandle import removePlayerfromDB
 from game.game_session import GameSession
 from game.game_states import register_active_session
+from game.game_teams import get_lobby_teams
 
 
 class LobbyMenuView(BaseView):
@@ -58,9 +59,10 @@ class LobbyMenuView(BaseView):
     async def start_game(self, button: discord.ui.Button, interaction: discord.Interaction):
         lobby = await findLobbyByCode(self.code)
         pack = await getPackByName(lobby['pack'])
-        session = GameSession(words=pack['words'], players=lobby['players'], player_scores={}, teams={})
+        teams_list = get_lobby_teams(self.host_id)
+        session = GameSession(words=pack['words'], players=lobby['players'], player_scores={}, teams=teams_list)
         register_active_session(interaction.user.id, session)
-        view = RoundView(interaction.user.id, interaction)
+        view = RoundView(interaction.user.id, interaction, interaction.user.id)
         register_round_view(interaction.user.id, view)
         from bot.connectBot import get_bot
         bot = get_bot()
@@ -82,8 +84,8 @@ class LobbyMenuView(BaseView):
     @discord.ui.button(label="Вийти", style=discord.ButtonStyle.secondary, row=4)
     async def exit_lobby(self, button: discord.ui.Button, interaction: discord.Interaction):
         from bot.views.main_menu import MainMenuView
-        from bot.states.lobby_state import unregister_view
-        unregister_view(interaction.user.id)
+        from bot.states.lobby_state import unregister_hostLobby_view
+        unregister_hostLobby_view(interaction.user.id)
         from bot.connectBot import get_bot
         bot = get_bot()
         bot.dispatch("destroy_lobby", self.code)

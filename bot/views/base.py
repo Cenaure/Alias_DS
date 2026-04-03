@@ -13,6 +13,11 @@ class BaseView(discord.ui.View):
             content=view.menu_text,
             view=view
         )
+    async def goto_global(self, interaction: discord.Interaction, view: "BaseView"):
+        await interaction.edit_original_response(
+            content=view.menu_text,
+            view=view
+        )
 
 class BackButton(discord.ui.Button):
     def __init__(self, target_view: "BaseView"):

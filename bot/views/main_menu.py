@@ -23,7 +23,7 @@ class MainMenuView(BaseView):
             players=lobby['player_names'],
             interaction=interaction,
             pack=lobby['pack'])
-        lobby_state.register_view(interaction.user.id, view)
+        lobby_state.register_hostLobby_view(interaction.user.id, view)
         await self.goto(interaction, view)
 
     @discord.ui.button(label="Приєднатися", style=discord.ButtonStyle.primary, row=0)

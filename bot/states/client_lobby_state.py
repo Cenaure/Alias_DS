@@ -13,4 +13,5 @@ def unregister_client_lobby(uid: int):
         active_client_lobbys.pop(uid)
 
 def get_client_lobby(uid: int):
+    print(f"Trying to get client lobby with id: {uid}")
     return active_client_lobbys.get(uid, {})

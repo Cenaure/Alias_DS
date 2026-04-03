@@ -1,6 +1,6 @@
 import asyncio
 from discord.ext import commands
-from bot.states.lobby_state import get_views
+from bot.states.lobby_state import get_hostLobby_view
 from db.lobbyHandle import findLobbyByCode
 from db.userHandle import removePlayerfromDB
 
@@ -11,7 +11,7 @@ class LobbyUpdateCog(commands.Cog):
 
     @commands.Cog.listener()
     async def on_update_lobby(self, lobby):
-        lobby_view = get_views(lobby['host'])
+        lobby_view = get_hostLobby_view(lobby['host'])
         playerCount = len(lobby['players'])
         players = lobby['player_names']
         print("LOBBY_UPDATE: Triggered custom event!!")

@@ -10,7 +10,7 @@ class GameUpdateCog(commands.Cog):
         self.bot = bot
 
     @commands.Cog.listener()
-    async def on_start_game_global(self, message: discord.Message, lobby_id: int, ):
+    async def on_start_game_global(self, message: discord.Message, lobby_id: int):
         lobby = await getLobbyByID(lobby_id)
         players = lobby['players']
         pass

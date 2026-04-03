@@ -21,10 +21,8 @@ class CreatePacksCog(commands.Cog):
         elif state == States.PACK_WAITING_WORDS:
             await self.handlePackWords(message)
 
-    @staticmethod
-    async def handlePackName(message: discord.Message):
+    async def handlePackName(self, message: discord.Message):
         name = message.content
-        #Додати перевірку на присутність у БД, щоб паки не можна було назвати однаково
         user_id = message.author.id
         pack = await checkPack(name)
         if pack is True:
@@ -35,8 +33,7 @@ class CreatePacksCog(commands.Cog):
         view = CreatePackMenu(stage="words", words=[])
         await message.reply(content=view.menu_text, view=view)
 
-    @staticmethod
-    async def handlePackWords(message: discord.Message):
+    async def handlePackWords(self, message: discord.Message):
         user_id = message.author.id
         word = message.content.strip()
         data = get_data(user_id)

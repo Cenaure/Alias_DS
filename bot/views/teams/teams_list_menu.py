@@ -2,7 +2,7 @@
 import discord
 
 from bot.views.base import BaseView
-from game.game_teams import register_team, get_lobby_teams, join_team
+from game.game_teams import register_team, get_lobby_teams, join_team, unregister_team
 
 
 class TeamsListView(BaseView):
@@ -33,6 +33,8 @@ class TeamButton(discord.ui.Button):
 
     async def callback(self, interaction: discord.Interaction):
         if interaction.user.name != self.team:
+            if interaction.user.name in get_lobby_teams(self.lobby_id):
+                unregister_team(self.lobby_id, interaction.user.name)
             join_team(lobby_id=self.lobby_id, player_id=interaction.user.id, team_name=self.team)
             print(f"{interaction.user.id} JOINED TEAM {self.team}")
             view = self.teamListView.back_view

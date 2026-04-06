@@ -6,6 +6,8 @@ from bot.views.game.round_register import register_round_view
 from bot.views.teams.teams_list_menu import TeamsListView
 from db.lobbyHandle import leaveLobbyDB, findLobbyByCode
 from db.userHandle import removePlayerfromDB
+from debug.DebugLogger import DebugLogger
+
 
 class LobbyClientView(BaseView):
     def __init__(self, lobby_name, player_count: int, players: list, code: int, interaction: discord.Interaction, host_id: int):
@@ -60,7 +62,7 @@ class LobbyClientView(BaseView):
 
     async def exit_lobby(self):
         from bot.views.main_menu import MainMenuView
-        print("EXITING LOBBY CLIENT")
+        DebugLogger.Console("EXITING LOBBY CLIENT")
         view = MainMenuView()
         await self.interaction.edit_original_response(
             content=view.menu_text, view=view)

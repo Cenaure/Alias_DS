@@ -2,6 +2,8 @@ import os
 import discord
 from dotenv import load_dotenv
 
+from debug.DebugLogger import DebugLogger
+
 load_dotenv()
 
 bot = None
@@ -11,7 +13,7 @@ async def start_bot():
 
     @bot.event
     async def on_ready():
-        print(f"Bot online {bot.user}")
+        DebugLogger.Console(f"Bot inited {bot.user}")
 
     #Реєстрація івентів, команд та іншого.. не загубитись пж(
     bot.load_extension('bot.cogs.main_menu_cog')

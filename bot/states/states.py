@@ -1,9 +1,11 @@
+from debug.DebugLogger import DebugLogger
+
 _states: dict[int, dict] = {}
 
 def set_state(user_id: int, state: str, **data):
     _states[user_id] = {"state": state, "data": data}
-    print("STATES: Set state", _states[user_id]["state"])
-    print("STATES: Dict, ", _states)
+    DebugLogger.Console("STATES: Set state", _states[user_id]["state"])
+    DebugLogger.Console("STATES: Dict, ", _states)
 
 def get_state(user_id: int) -> str | None:
     return _states.get(user_id, {}).get("state")
@@ -14,10 +16,10 @@ def get_data(user_id: int) -> dict:
 def update_data(user_id: int, **kwargs):
     if user_id in _states:
         _states[user_id]["data"].update(kwargs)
-        print("STATES: Updated data ", _states[user_id]["data"])
+        DebugLogger.Console("STATES: Updated data ", _states[user_id]["data"])
 
 def clear_state(user_id: int):
-    print("STATES: Cleared state ", user_id)
+    DebugLogger.Console("STATES: Cleared state ", user_id)
     _states.pop(user_id, None)
 
 

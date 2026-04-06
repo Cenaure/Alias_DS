@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 from bot.states.states import States, get_state, clear_state
 from db.lobbyHandle import joinLobbyDB, findLobbyByCode
+from debug.DebugLogger import DebugLogger
 
 
 class LobbyJoinCog(commands.Cog):
@@ -33,7 +34,7 @@ class LobbyJoinCog(commands.Cog):
             view = get_join_view(message.author.id)
             await view.joinLobbySetView(lobby_name=lobby['name'], player_count=len(lobby['players']), players=lobby['player_names'], code=code, host_id=lobby['host'])
 
-            print("JOINED LOBBY, player ", message.author.name)
+            DebugLogger.Console("JOINED LOBBY, player ", message.author.name)
 
 
 

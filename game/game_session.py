@@ -1,5 +1,8 @@
 from random import randint
 
+from debug.DebugLogger import DebugLogger
+
+
 class GameSession:
     def __init__(self, words: list, players, player_scores: dict, teams: dict):
         self.words = words
@@ -31,11 +34,11 @@ class GameSession:
                 self.words.pop(rand_index)
                 rand_index += 1
                 word = self.words[rand_index]
-                print("SESSION: get_random_word: ", word)
+                DebugLogger.Console("SESSION: get_random_word: ", word)
                 return word
             else:
                 word = self.words[rand_index]
-                print("SESSION: get_random_word: ", word)
+                DebugLogger.Console("SESSION: get_random_word: ", word)
                 self.words.pop(rand_index)
                 return word
 

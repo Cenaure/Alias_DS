@@ -3,6 +3,7 @@ from discord.ext import commands
 from bot.states.lobby_state import get_hostLobby_view
 from db.lobbyHandle import findLobbyByCode
 from db.userHandle import removePlayerfromDB
+from debug.DebugLogger import DebugLogger
 
 
 class LobbyUpdateCog(commands.Cog):
@@ -14,7 +15,7 @@ class LobbyUpdateCog(commands.Cog):
         lobby_view = get_hostLobby_view(lobby['host'])
         playerCount = len(lobby['players'])
         players = lobby['player_names']
-        print("LOBBY_UPDATE: Triggered custom event!!")
+        DebugLogger.Console("LOBBY_UPDATE: Triggered custom event!!")
         await lobby_view.refresh_lobby(playerCount, players)
 
     @commands.Cog.listener()

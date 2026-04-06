@@ -5,6 +5,7 @@ from datetime import datetime
 
 from db import get_Db
 from db.userHandle import addPlayertoDB
+from debug.DebugLogger import DebugLogger
 
 
 async def createLobbyDB(uid: int, name: str):
@@ -33,39 +34,39 @@ async def deleteLobbyDB(uid: int):
 
     rmdoc = await col.find_one_and_delete({"host": uid})
     if rmdoc:
-        print("MONGO: Removed ", rmdoc)
+        DebugLogger.Console("MONGO: Removed ", rmdoc)
     else:
-        print("MONGO: No lobby deleted, removing user instead")
+        DebugLogger.Console("MONGO: No lobby deleted, removing user instead")
         coll = db.get_collection('players')
         player = await coll.find_one({"uid": uid})
         if player is not None:
             lobby_id = player.get("lobby_id")
             await col.find_one_and_update({"host": lobby_id}, {"$pull": {"players": uid}})
-            print("MONGO: Removed ", uid)
+            DebugLogger.Console("MONGO: Removed ", uid)
 
 
 async def joinLobbyDB(code: int, user_id: int, usname: str):
     db = get_Db()
     col = db.get_collection('lobbys')
-    print("MONGO: Got code,", code)
+    DebugLogger.Console("MONGO: Got code,", code)
     col.find_one_and_update({"code": code}, {'$push': {"players": user_id}})
     col.find_one_and_update({"code": code}, {'$push': {"player_names": usname}})
     lobby = await col.find_one({"code": code})
     if not lobby:
         return False
     lobby_id = lobby['host']
-    print("MONGO: Got lobby_id, ", lobby_id)
+    DebugLogger.Console("MONGO: Got lobby_id, ", lobby_id)
     await addPlayertoDB(user_id, usname, lobby_id, "player")
-    print("Added ", user_id)
+    DebugLogger.Console("Added ", user_id)
     return True
 
 async def leaveLobbyDB(code: int, user_id: int, usname: str):
     db = get_Db()
     col = db.get_collection('lobbys')
-    print("MONGO: Got code,", code)
+    DebugLogger.Console("MONGO: Got code,", code)
     await col.find_one_and_update({"code": code}, {'$pull': {"players": user_id}})
     await col.find_one_and_update({"code": code}, {'$pull': {"player_names": usname}})
-    print("MONGO: Removed from lobby,", user_id)
+    DebugLogger.Console("MONGO: Removed from lobby,", user_id)
 
 # -------------------------
 
@@ -73,7 +74,7 @@ async def flushDb():
     db = get_Db()
     col = db.get_collection('lobbys')
     col.delete_many({})
-    print("MONGO: Deleted All lobbies on start")
+    DebugLogger.Console("MONGO: Deleted All lobbies on start")
 
 async def generateLobbyCode():
     db = get_Db()

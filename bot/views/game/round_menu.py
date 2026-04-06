@@ -3,6 +3,7 @@ from enum import Enum
 
 import discord
 from bot.views.base import BaseView
+from debug.DebugLogger import DebugLogger
 from game.game_states import get_active_session
 
 
@@ -58,7 +59,7 @@ class ControlButton(discord.ui.Button):
                     row=0
                 )
     async def callback(self, interaction: discord.Interaction):
-        print("CALLBACK: Should update text")
+        DebugLogger.Console("CALLBACK: Should update text")
 
 class ButtonTypes(Enum):
     GREEN = 1

@@ -3,6 +3,7 @@ from discord.ext import commands
 from bot.states.states import States, get_state, set_state, update_data, get_data
 from bot.views.packs.packs_creation_menu import CreatePackMenu
 from db.packs import checkPack
+from debug.DebugLogger import DebugLogger
 
 
 class CreatePacksCog(commands.Cog):
@@ -26,7 +27,7 @@ class CreatePacksCog(commands.Cog):
         user_id = message.author.id
         pack = await checkPack(name)
         if pack is True:
-            print(f"PACKS: {name} already exists in DB")
+            DebugLogger.Console(f"PACKS: {name} already exists in DB")
             await message.reply(f"'{name}' вже зайнято, введіть іншу назву")
             return
         set_state(user_id, States.PACK_WAITING_WORDS, pack_name=name, words=[])

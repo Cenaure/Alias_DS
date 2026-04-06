@@ -2,6 +2,7 @@
 import discord
 
 from bot.views.base import BaseView
+from debug.DebugLogger import DebugLogger
 from game.game_teams import register_team, get_lobby_teams, join_team, unregister_team
 
 
@@ -14,7 +15,7 @@ class TeamsListView(BaseView):
         self.teams = get_lobby_teams(self.host_id)
         super().__init__(back_view=None)
         for team in self.teams:
-            print("DEBUG: teams:", team)
+            DebugLogger.Console("DEBUG: teams:", team)
             self.add_item(TeamButton(team=team, row=len(self.teams) // 3, lobby_id=self.host_id, team_list_view=self))
         self.add_item(CreateTeam(row=4, uid=self.host_id, teamlistview=self))
         self.add_item(BackButton(teamlistview=self))
@@ -36,12 +37,12 @@ class TeamButton(discord.ui.Button):
             if interaction.user.name in get_lobby_teams(self.lobby_id):
                 unregister_team(self.lobby_id, interaction.user.name)
             join_team(lobby_id=self.lobby_id, player_id=interaction.user.id, team_name=self.team)
-            print(f"{interaction.user.id} JOINED TEAM {self.team}")
+            DebugLogger.Console(f"{interaction.user.id} JOINED TEAM {self.team}")
             view = self.teamListView.back_view
             await view.refresh_lobby(team_name=self.team)
             await interaction.response.edit_message(content=view.menu_text, view=view)
         else:
-            print(f"TEAMS: Exception! Cannot join player {interaction.user.name} to self team")
+            DebugLogger.Console(f"TEAMS: Exception! Cannot join player {interaction.user.name} to self team")
 
 
 
